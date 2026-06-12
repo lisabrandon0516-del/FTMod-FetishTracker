@@ -1,5 +1,6 @@
 # FTMod Start - Fetish Tracker Mod
 # Fetish-focused evolution of VTMod
+# Safe init priorities to avoid load order issues
 
 define config.name = _("Lab Rats 2 Reformulate - Fetish Edition")
 define config.window_icon = "FTimages/mod_icon.png"
@@ -115,7 +116,6 @@ init python:
         random.shuffle(FTcumvirginlist)
         random.shuffle(FTcumclaimlist)
 
-        # Update text variables (you can expand this)
         global FThypnoknowtext, FThypnovirgintext, FThypnoclaimtext
         FThypnoknowtext = FThypnoknowlist[0]
         FThypnovirgintext = FThypnovirginlist[0]
@@ -123,8 +123,7 @@ init python:
 
     FT_shuffle_and_update()
 
-
-init -1 python:
+    # Safe function definition (no init -1 to avoid load order issues)
     def ft_enabled():
         try:
             return FT_MOD
@@ -132,6 +131,7 @@ init -1 python:
             return False
 
 
+# Label override at init 15 (safe timing)
 init 15 python:
     config.label_overrides["start"] = "FT_start"
 
@@ -150,7 +150,6 @@ label FT_start():
     $ modsinstalled = []
     if ft_enabled():
         $ modsinstalled.append("Fetish Tracker Mod")
-    # Add detection for other mods here if needed
 
     if modsinstalled == []:
         "No mods are installed."
@@ -170,9 +169,6 @@ label FT_start():
             $ persistent.starting_fetish_focus = "exhibition"
         "Cum & Marking Focused":
             $ persistent.starting_fetish_focus = "cumplay"
-
-    # You can keep or adapt the original pregnancy preference, game speed, and mode menus here
-    # call screen VTMOD_setup_ui()
 
     "That's all, the game will now initialize..."
     call screen character_create_screen()
