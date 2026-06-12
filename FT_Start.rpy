@@ -1,20 +1,19 @@
-# FTMod Start - Minimal Safe Version for Testing
-# Only essential code to avoid load order conflicts
+# FTMod - Ultra Minimal Delayed Load Version (Option B)
+# Goal: Touch as little as possible during early init to avoid breaking base game timing
 
 define config.name = _("Lab Rats 2 Reformulate - Fetish Edition")
 define config.window_icon = "FTimages/mod_icon.png"
-define FT_Game_Version = " + FTMod 1.0 (Fetish Tracker)"
 
-init python:
-    config.version += FT_Game_Version
-
+init 100 python:
+    config.version += " + FTMod 1.0 (Fetish Tracker)"
+    
     def ft_enabled():
         try:
             return FT_MOD
         except NameError:
             return False
 
-init 15 python:
+init 100 python:
     config.label_overrides["start"] = "FT_start"
 
 
@@ -29,12 +28,7 @@ label FT_start():
 
     "[config.version]"
 
-    $ modsinstalled = []
     if ft_enabled():
-        $ modsinstalled.append("Fetish Tracker Mod")
-
-    if modsinstalled:
-        $ mod_message = "{image=ftcherries_small} Fetish Tracker Mod is active."
-        "[mod_message]"
+        "Fetish Tracker Mod is active."
 
     jump normal_start
