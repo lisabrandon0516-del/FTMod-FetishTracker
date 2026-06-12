@@ -24,7 +24,7 @@ init python:
     ]
     FThypnovirginlist = [
         "She's never been hypnotized before.",
-        "Her mind is completely untouched... pure."],
+        "Her mind is completely untouched... pure.",
         "No one has ever taken control of her thoughts.",
         "She's a hypnosis virgin - waiting to be programmed."
     ]
@@ -88,15 +88,38 @@ init python:
 
     # ==================== INDEXES & SHUFFLE FUNCTION ====================
     FThypnoknow_index = 0
-    # ... add indexes for all new lists
+    FThypnovirgin_index = 0
+    FThypnoclaim_index = 0
+    FTbreedingknow_index = 0
+    FTbreedingvirgin_index = 0
+    FTbreedingclaim_index = 0
+    FTexhibknow_index = 0
+    FTexhibvirgin_index = 0
+    FTexhibclaim_index = 0
+    FTcumknow_index = 0
+    FTcumvirgin_index = 0
+    FTcumclaim_index = 0
 
     def FT_shuffle_and_update():
         import random
-        # Shuffle all fetish lists here
         random.shuffle(FThypnoknowlist)
-        # ... etc
-        # Then assign to text variables
-        pass  # Implement fully based on your original VT_shuffle_and_update
+        random.shuffle(FThypnovirginlist)
+        random.shuffle(FThypnoclaimlist)
+        random.shuffle(FTbreedingknowlist)
+        random.shuffle(FTbreedingvirginlist)
+        random.shuffle(FTbreedingclaimlist)
+        random.shuffle(FTexhibknowlist)
+        random.shuffle(FTexhibvirginlist)
+        random.shuffle(FTexhibclaimlist)
+        random.shuffle(FTcumknowlist)
+        random.shuffle(FTcumvirginlist)
+        random.shuffle(FTcumclaimlist)
+
+        # Update text variables (you can expand this)
+        global FThypnoknowtext, FThypnovirgintext, FThypnoclaimtext
+        FThypnoknowtext = FThypnoknowlist[0]
+        FThypnovirgintext = FThypnovirginlist[0]
+        FThypnoclaimtext = FThypnoclaimlist[0]
 
     FT_shuffle_and_update()
 
@@ -108,8 +131,6 @@ init -1 python:
         except NameError:
             return False
 
-    # Add more mod detection functions as needed
-
 
 init 15 python:
     config.label_overrides["start"] = "FT_start"
@@ -117,22 +138,24 @@ init 15 python:
 
 label FT_start():
     scene bg paper_menu_background with fade
-    "Lab Rats 2 contains adult content..."
+    "Lab Rats 2 contains adult content. If you are not over 18 or your country's equivalent age you should not view this content."
     menu:
         "I am over 18":
             pass
         "I am not over 18":
             $ renpy.full_restart()
 
-    "[config.version]"
+    "[config.version] represents an early iteration of Lab Rats 2. Expect to run into limited content, unexplained features, and unbalanced game mechanics."
 
-    # Mod detection display (same style as original)
     $ modsinstalled = []
     if ft_enabled():
         $ modsinstalled.append("Fetish Tracker Mod")
-    # ... other mods
+    # Add detection for other mods here if needed
 
-    if modsinstalled:
+    if modsinstalled == []:
+        "No mods are installed."
+    else:
+        $ mod_message = "{image=ftcherries_small} The following mods are installed: \n " + ", ".join(modsinstalled)
         "[mod_message]"
 
     "Choose your starting fetish focus..."
@@ -148,11 +171,10 @@ label FT_start():
         "Cum & Marking Focused":
             $ persistent.starting_fetish_focus = "cumplay"
 
-    # Call original pregnancy preference + game speed + mode menus (keep for compatibility)
-    call screen VTMOD_setup_ui()  # You can rename/adapt this later
+    # You can keep or adapt the original pregnancy preference, game speed, and mode menus here
+    # call screen VTMOD_setup_ui()
 
-    # Character creation + game init (same as original)
+    "That's all, the game will now initialize..."
     call screen character_create_screen()
-    # ... rest of initialization logic from your VT_Start.rpy
 
     jump normal_start
